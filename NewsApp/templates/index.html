@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DailyNews | Modern Edition</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg:#f8fafc;
+    --surface:#ffffffcc;
+    --accent:#2563eb;
+    --text-dark:#0f172a;
+    --text-light:#64748b;
+    --shadow:0 20px 40px rgba(0,0,0,0.06);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:'Plus Jakarta Sans',sans-serif;
+    background:var(--bg);
+    color:var(--text-dark);
+}
+
+header{
+    position:sticky;
+    top:0;
+    backdrop-filter:blur(20px);
+    background:var(--surface);
+    padding:20px 8%;
+    z-index:1000;
+}
+
+.header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.logo{font-weight:800;font-size:1.5rem;}
+.logo span{color:var(--accent);}
+
+.search-bar input{
+    padding:8px 12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-family:inherit;
+}
+
+.toggle{
+    background:var(--accent);
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+.category-bar{display:flex;gap:12px;overflow-x:auto;}
+.category-bar a{
+    padding:8px 18px;
+    border-radius:100px;
+    text-decoration:none;
+    font-weight:600;
+    background:#e2e8f0;
+    color:var(--text-dark);
+    transition:.3s;
+    white-space:nowrap;
+}
+.category-bar a:hover,.category-bar a.active{background:var(--accent);color:white;}
+
+.main{max-width:1200px;margin:50px auto;padding:0 8%;}
+
+/* HERO */
+.hero{
+    position:relative;
+    height:520px;
+    border-radius:30px;
+    overflow:hidden;
+    margin-bottom:70px;
+    box-shadow:var(--shadow);
+}
+.hero img{width:100%;height:100%;object-fit:cover;transition:1s;}
+.hero:hover img{transform:scale(1.05);}
+.hero-overlay{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    padding:60px;
+    background:linear-gradient(transparent,rgba(0,0,0,0.88));
+    color:white;
+}
+.hero-tag{
+    display:inline-block;
+    background:var(--accent);
+    color:white;
+    font-size:.72rem;
+    font-weight:700;
+    padding:4px 12px;
+    border-radius:100px;
+    margin-bottom:14px;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+}
+.hero h1{font-size:3rem;margin-bottom:12px;line-height:1.15;}
+.hero-meta{font-size:.88rem;opacity:.75;margin-top:6px;}
+
+/* SECTION HEADER */
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;}
+.section-header a{color:var(--accent);font-size:.88rem;font-weight:600;text-decoration:none;}
+
+/* CARDS */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+    margin-bottom:70px;
+}
+
+.card{
+    background:var(--surface);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    transition:.4s;
+    overflow:hidden;
+}
+.card:hover{transform:translateY(-8px);}
+.card-img{width:100%;height:180px;object-fit:cover;display:block;}
+.card-body{padding:22px;}
+
+.card-tag{
+    display:inline-block;
+    font-size:.7rem;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:100px;
+    margin-bottom:10px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:white;
+}
+.tag-business{background:#059669;}
+.tag-health{background:#ea580c;}
+.tag-science{background:#0891b2;}
+.tag-sports{background:#dc2626;}
+.tag-entertainment{background:#db2777;}
+.tag-technology{background:#7c3aed;}
+.tag-general{background:#475569;}
+
+.card h3{font-size:1.05rem;margin-bottom:8px;line-height:1.35;}
+.card p{color:var(--text-light);font-size:.875rem;line-height:1.55;}
+.card-meta{color:var(--text-light);font-size:.78rem;margin-top:12px;display:flex;gap:10px;}
+
+/* SPLIT */
+.split{display:grid;grid-template-columns:2fr 1fr;gap:40px;}
+
+.feed-item{
+    display:flex;
+    gap:20px;
+    margin-bottom:30px;
+    padding-bottom:30px;
+    border-bottom:1px solid #e2e8f0;
+}
+.feed-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.feed-item img{
+    width:160px;
+    height:130px;
+    border-radius:16px;
+    object-fit:cover;
+    flex-shrink:0;
+    transition:.3s;
+}
+.feed-item:hover img{transform:scale(1.03);}
+.feed-item h3{font-size:1rem;line-height:1.4;margin-bottom:6px;}
+.feed-item p{color:var(--text-light);font-size:.85rem;line-height:1.5;}
+.feed-meta{color:var(--text-light);font-size:.78rem;margin-top:8px;display:flex;gap:10px;}
+
+/* SIDEBAR */
+.sidebar{
+    background:var(--surface);
+    padding:30px;
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    height:fit-content;
+}
+.sidebar h3{font-size:1.05rem;margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid var(--accent);}
+.sidebar-item{
+    display:flex;
+    gap:12px;
+    padding:14px 0;
+    border-bottom:1px solid #e2e8f0;
+    align-items:flex-start;
+}
+.sidebar-item:last-child{border-bottom:none;padding-bottom:0;}
+.sidebar-num{
+    font-size:1.4rem;
+    font-weight:800;
+    color:var(--accent);
+    opacity:.35;
+    line-height:1;
+    flex-shrink:0;
+    width:28px;
+}
+.sidebar-item h4{font-size:.875rem;line-height:1.35;margin-bottom:3px;}
+.sidebar-item p{color:var(--text-light);font-size:.78rem;}
+
+/* TRENDING */
+.trending{margin-top:80px;}
+.trending-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+.trending-card{
+    background:var(--surface);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    transition:.4s;
+    overflow:hidden;
+    position:relative;
+}
+.trending-card:hover{transform:translateY(-6px);}
+.trending-card img{width:100%;height:160px;object-fit:cover;display:block;}
+.trending-body{padding:20px;}
+.trending-num{
+    font-size:3rem;
+    font-weight:800;
+    color:var(--accent);
+    opacity:.12;
+    position:absolute;
+    top:130px;
+    right:16px;
+    line-height:1;
+}
+.trending-card h3{font-size:.95rem;margin-bottom:6px;line-height:1.35;}
+.trending-card p{color:var(--text-light);font-size:.82rem;line-height:1.45;}
+
+/* NEWSLETTER */
+.newsletter{
+    margin:100px 0;
+    padding:70px 40px;
+    text-align:center;
+    border-radius:30px;
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    color:white;
+}
+.newsletter h2{font-size:2rem;margin-bottom:10px;}
+.newsletter > p{opacity:.85;margin-bottom:28px;}
+.newsletter-form{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.newsletter input{
+    padding:13px 18px;
+    width:280px;
+    border-radius:10px;
+    border:none;
+    font-family:inherit;
+    font-size:.95rem;
+}
+.newsletter button{
+    padding:13px 24px;
+    border:none;
+    border-radius:10px;
+    background:#0f172a;
+    color:white;
+    font-family:inherit;
+    font-weight:700;
+    cursor:pointer;
+    font-size:.95rem;
+}
+
+/* FOOTER */
+footer{background:var(--text-dark);color:white;padding:60px 8%;}
+.footer-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:40px;
+    margin-bottom:30px;
+}
+.footer-grid h3{font-size:1.1rem;margin-bottom:12px;}
+.footer-grid h4{font-size:.95rem;margin-bottom:12px;opacity:.85;}
+footer p{font-size:.875rem;opacity:.6;line-height:2;}
+.copyright{text-align:center;font-size:.8rem;opacity:.4;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);}
+
+@media(max-width:900px){
+    .split{grid-template-columns:1fr;}
+    .hero h1{font-size:2rem;}
+    .hero-overlay{padding:30px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">Daily<span>News</span></div>
+    <div class="search-bar"><input type="text" placeholder="Search news..."></div>
+    <button class="toggle">Mode</button>
+  </div>
+
+  <nav class="category-bar">
+    <a href="{% url 'general' %}?v=General" class="active">General</a>
+    <a href="{% url 'general' %}?v=Business">Business</a>
+    <a href="{% url 'general' %}?v=Health">Health</a>
+    <a href="{% url 'general' %}?v=Science">Science</a>
+    <a href="{% url 'general' %}?v=Sports">Sports</a>
+    <a href="{% url 'general' %}?v=Entertainment">Entertainment</a>
+    <a href="{% url 'general' %}?v=Technology">Technology</a>
+  </nav>
+</header>
+
+<div class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <img src="https://images.unsplash.com/photo-1466611653911-95282fc3656b?auto=format&fit=crop&q=80&w=1200" alt="Clean Energy">
+    <div class="hero-overlay">
+      <div class="hero-tag">Science</div>
+      <h1>Clean Energy Becomes the World's Cheapest Power Source</h1>
+      <p>Solar and wind reshape global energy markets at an unprecedented pace.</p>
+      <div class="hero-meta">March 2, 2026 &nbsp;·&nbsp; 8 min read &nbsp;·&nbsp; By Sarah Mitchell</div>
+    </div>
+  </section>
+
+  <!-- EDITOR PICKS -->
+  <div class="section-header">
+    <h2>Editor's Picks</h2>
+    <a href="#">View all →</a>
+  </div>
+  <div class="grid">
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=600" alt="Business">
+      <div class="card-body">
+        <span class="card-tag tag-business">Business</span>
+        <h3>Micro-Investing Apps Are Building Real Wealth for Gen Z</h3>
+        <p>Fractional shares and automated portfolios are making investing a daily habit for a new generation.</p>
+        <div class="card-meta"><span>Mar 1, 2026</span><span>· 5 min read</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=600" alt="Science">
+      <div class="card-body">
+        <span class="card-tag tag-science">Science</span>
+        <h3>Webb Telescope Captures Galaxy Formation Never Seen Before</h3>
+        <p>Astronomers are calling it a paradigm shift — new images rewrite theories about the early universe.</p>
+        <div class="card-meta"><span>Feb 28, 2026</span><span>· 7 min read</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=600" alt="Entertainment">
+      <div class="card-body">
+        <span class="card-tag tag-entertainment">Entertainment</span>
+        <h3>Streaming Wars Enter a New Phase as Live Sports Rights Explode</h3>
+        <p>Netflix, Apple, and Amazon are spending record billions to lock in live sport broadcasting deals.</p>
+        <div class="card-meta"><span>Feb 27, 2026</span><span>· 4 min read</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CONTENT SPLIT -->
+  <div class="split">
+
+    <section>
+      <h2 style="margin-bottom:24px;">Latest News</h2>
+
+      <div class="feed-item">
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=400" alt="Technology">
+        <div>
+          <span class="card-tag tag-technology" style="font-size:.68rem;padding:3px 9px;">Technology</span>
+          <h3>Spatial Computing Is Quietly Taking Over the Modern Workplace</h3>
+          <p>From architecture firms to surgical suites, mixed-reality headsets are becoming standard professional tools.</p>
+          <div class="feed-meta"><span>2 hours ago</span><span>· 6 min read</span></div>
+        </div>
+      </div>
+
+      <div class="feed-item">
+        <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=400" alt="Sports">
+        <div>
+          <span class="card-tag tag-sports" style="font-size:.68rem;padding:3px 9px;">Sports</span>
+          <h3>Record-Breaking Season Pushes Global Football Viewership Past 5 Billion</h3>
+          <p>Streaming platforms and new markets in Asia drove the most-watched sporting season in history.</p>
+          <div class="feed-meta"><span>5 hours ago</span><span>· 4 min read</span></div>
+        </div>
+      </div>
+
+      <div class="feed-item">
+        <img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&q=80&w=400" alt="Health">
+        <div>
+          <span class="card-tag tag-health" style="font-size:.68rem;padding:3px 9px;">Health</span>
+          <h3>New Blood-Based Test Predicts Biological Age With 95% Accuracy</h3>
+          <p>Researchers say the test could enable personalised longevity plans and reshape preventive medicine.</p>
+          <div class="feed-meta"><span>8 hours ago</span><span>· 5 min read</span></div>
+        </div>
+      </div>
+
+      <div class="feed-item">
+        <img src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&q=80&w=400" alt="General">
+        <div>
+          <span class="card-tag tag-general" style="font-size:.68rem;padding:3px 9px;">General</span>
+          <h3>G20 Nations Agree on First Binding Framework for AI Development</h3>
+          <p>The landmark accord establishes safety standards and cross-border data rules for frontier AI models.</p>
+          <div class="feed-meta"><span>11 hours ago</span><span>· 6 min read</span></div>
+        </div>
+      </div>
+
+    </section>
+
+    <aside class="sidebar">
+      <h3>Quick Updates</h3>
+
+      <div class="sidebar-item">
+        <div class="sidebar-num">1</div>
+        <div>
+          <h4>Global stocks rebound after Fed signals rate pause</h4>
+          <p>Business · 30 min ago</p>
+        </div>
+      </div>
+
+      <div class="sidebar-item">
+        <div class="sidebar-num">2</div>
+        <div>
+          <h4>Scientists confirm ocean microplastics have entered the food chain</h4>
+          <p>Science · 1 hour ago</p>
+        </div>
+      </div>
+
+      <div class="sidebar-item">
+        <div class="sidebar-num">3</div>
+        <div>
+          <h4>Study: moderate coffee intake linked to lower cardiac risk</h4>
+          <p>Health · 2 hours ago</p>
+        </div>
+      </div>
+
+      <div class="sidebar-item">
+        <div class="sidebar-num">4</div>
+        <div>
+          <h4>Award season shake-up as streaming sweeps top film nominations</h4>
+          <p>Entertainment · 3 hours ago</p>
+        </div>
+      </div>
+
+      <div class="sidebar-item">
+        <div class="sidebar-num">5</div>
+        <div>
+          <h4>National team sets new world record in 400m relay at World Athletics</h4>
+          <p>Sports · 4 hours ago</p>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- TRENDING -->
+  <section class="trending">
+    <div class="section-header">
+      <h2>Trending Now</h2>
+      <a href="#">See all →</a>
+    </div>
+    <div class="trending-grid">
+
+      <div class="trending-card">
+        <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&q=80&w=600" alt="Technology">
+        <div class="trending-num">1</div>
+        <div class="trending-body">
+          <span class="card-tag tag-technology" style="font-size:.68rem;padding:3px 9px;">Technology</span>
+          <h3>AI Is Creating More Jobs Than It Eliminates, New Data Shows</h3>
+          <p>A 12-country study challenges fears about automation and employment.</p>
+          <div class="card-meta"><span>Mar 2, 2026</span><span>· 5 min</span></div>
+        </div>
+      </div>
+
+      <div class="trending-card">
+        <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=600" alt="Business">
+        <div class="trending-num">2</div>
+        <div class="trending-body">
+          <span class="card-tag tag-business" style="font-size:.68rem;padding:3px 9px;">Business</span>
+          <h3>India's Startup Ecosystem Mints a New Unicorn Every 11 Days</h3>
+          <p>Bangalore and Hyderabad now rival Silicon Valley for early-stage venture activity.</p>
+          <div class="card-meta"><span>Mar 1, 2026</span><span>· 4 min</span></div>
+        </div>
+      </div>
+
+      <div class="trending-card">
+        <img src="https://images.unsplash.com/photo-1584974292709-5c2f0619d449?auto=format&fit=crop&q=80&w=600" alt="Science">
+        <div class="trending-num">3</div>
+        <div class="trending-body">
+          <span class="card-tag tag-science" style="font-size:.68rem;padding:3px 9px;">Science</span>
+          <h3>Historic Global Climate Bill Passes with 141 Nation Signatures</h3>
+          <p>The sweeping agreement mandates net-zero emissions in heavy industry by 2038.</p>
+          <div class="card-meta"><span>Feb 29, 2026</span><span>· 6 min</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <h2>Stay Ahead of Headlines</h2>
+    <p>Get the most important stories delivered to your inbox every morning.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Enter your email address">
+      <button>Subscribe Free</button>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h3>DailyNews</h3>
+      <p>Trusted global journalism since 2010. Covering the stories that shape our world.</p>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <p>About Us</p>
+      <p>Careers</p>
+      <p>Press Room</p>
+      <p>Advertise</p>
+    </div>
+    <div>
+      <h4>Sections</h4>
+      <p>Business</p>
+      <p>Health</p>
+      <p>Science</p>
+      <p>Sports</p>
+      <p>Entertainment</p>
+      <p>Technology</p>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <p>Privacy Policy</p>
+      <p>Terms of Service</p>
+      <p>Cookie Settings</p>
+    </div>
+  </div>
+  <div class="copyright">© 2026 DailyNews. All rights reserved.</div>
+</footer>
+
+</body>
+</html>

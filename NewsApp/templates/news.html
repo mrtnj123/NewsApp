@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ d.title }} | Daily News</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #2563eb;
+            --border: #e2e8f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); 
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* --- Simple Header --- */
+        header {
+            padding: 20px 5%;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- Article Container --- */
+        .article-container {
+            max-width: 800px; /* Narrower width for better reading experience */
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .article-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .category-tag {
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: 800;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .article-meta {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* --- Featured Image --- */
+        .featured-image-wrap {
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        .featured-image {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: cover;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* --- Content Styling --- */
+        .article-content {
+            font-family: 'Lora', serif; /* Serif font for long-form reading */
+            font-size: 1.25rem;
+            color: #334155;
+            line-height: 1.8;
+        }
+
+        .article-content p {
+            margin-bottom: 25px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .article-container { margin: 30px auto; }
+            .featured-image { border-radius: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-btn">← Back to News</a>
+        <div style="font-weight: 800; text-transform: uppercase; letter-spacing: -1px;">Daily<span>News</span></div>
+    </header>
+
+    <article class="article-container">
+        <div class="article-header">
+            <span class="category-tag"></span>
+            <h1>{{data.title}}</h1>
+            <div class="article-meta">
+                Published on {{data.publishedAt}} 
+            </div>
+        </div>
+
+        <div class="featured-image-wrap">
+            <img class="featured-image" src="{{data.urlToImage }}" alt="{{data.title }}" onerror="this.src='https://images.unsplash.com/photo-1504711432869-efd597cdd045?auto=format&fit=crop&q=80&w=1200'">
+        </div>
+
+        <div class="article-content">
+
+            <h4>{{data.content}}</h4>
+            
+        </div>
+    </article>
+
+
+</body>
+</html>

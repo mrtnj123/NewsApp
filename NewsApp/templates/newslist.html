@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Daily News | Modern Grid Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --accent: #2563eb;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); 
+            color: var(--text-dark); 
+            line-height: 1.5;
+        }
+
+        /* --- Header --- */
+        header {
+            background: var(--surface);
+            padding: 20px 8%;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -1px; text-transform: uppercase; }
+        .logo span { color: var(--accent); }
+        .date { font-size: 0.75rem; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- Main Container & Grid --- */
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 8%;
+        }
+
+        .news-grid {
+            display: grid;
+            /* This is the key to having items side-by-side */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- News Card --- */
+        .card {
+            background: var(--surface);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.03);
+            height: 100%; /* Ensures cards in the same row have equal height */
+        }
+
+        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+
+        .card-img-wrap {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background: #eee;
+        }
+
+        .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .card:hover .card-img { transform: scale(1.05); }
+
+        .card-body { padding: 24px; flex-grow: 1; display: flex; flex-direction: column; }
+
+        .card-body h3 { 
+            font-size: 1.2rem; 
+            font-weight: 800; 
+            margin-bottom: 12px; 
+            line-height: 1.3;
+            /* Limits title to 2 lines for a clean grid */
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        .card-body p { 
+            font-size: 0.9rem; 
+            color: var(--text-light); 
+            margin-bottom: 20px;
+            line-height: 1.6;
+            /* Limits description to 3 lines */
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        .card-meta {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 650px) {
+            .container { padding: 0 20px; }
+            .news-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-wrap">
+            <div class="logo">Daily<span>News</span></div>
+            <div class="date">Monday, March 2, 2026</div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="news-grid">
+            {% for d in data %}
+            <article class="card">
+                <div class="card-img-wrap">
+                    <img class="card-img" src="{{ d.urlToImage }}" alt="News Image" onerror="this.src='https://images.unsplash.com/photo-1504711432869-efd597cdd045?auto=format&fit=crop&q=80&w=600'">
+                </div>
+                <div class="card-body">
+                    <h3>{{ d.title }}</h3>
+                    <p>{{ d.description }}</p>
+                    <div class="card-meta"  >
+                        <!-- <a href=""> <span > Read More →</span>  </a> -->
+
+                    <span> <a href="{% url 'news' %}?x={{forloop.counter}}&y={{title}}">Read More →</a> </span>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </main>
+
+</body>
+</html>
